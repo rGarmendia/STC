@@ -1,0 +1,43 @@
+<ion-view view-title="Upload Certificate">
+<ion-nav-bar class="bar-balanced">
+    <ion-nav-back-button></ion-nav-back-button>
+  </ion-nav-bar>
+	<ion-content>
+	<div class="list">
+
+    
+      <label class="item item-input item-select">
+    <div class="input-label">
+     Select a Category
+    </div>
+      <select ng-model="category_selected">
+        <option ng-repeat="category in categories" value="{{category.id_categories}}">{{category.description}}</option>
+      </select>
+      </label>
+</div>
+
+
+<div class="row"><label style="font-size: 12px; display: table; margin-left: auto;margin-right: auto; margin-top: 15px; ">Please tap the "Load Workshop" Button</label>
+
+<button class="  button button-balanced" style="margin-bottom: 15px; " ng-click="load(category_selected)">
+Load Workshop</button>
+</div>
+
+    <label class="item item-input item-select">
+    <div class="input-label">
+     Select a Workshop
+    </div>
+      <select ng-model="workshop_selected">
+        <option ng-repeat="workshop in workshops" value="{{workshop.id_workshops}}">{{workshop.name}}</option>
+      </select>
+      </label>
+</div>
+
+
+<button  ng-click="select_pic()"   style="margin-top: 10px;" ng-show="!save" class=" col-offset-33 button button-balanced ">Select a Certificate</button>
+  </div>
+  <button  ng-click="upload(workshop_selected)"  style="margin-top: 10px;" ng-show="save" class="col-offset-33 button button-balanced ">Upload a Certificate</button>
+  </div>
+	</ion-content>
+</ion-view>
+

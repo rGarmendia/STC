@@ -1,0 +1,61 @@
+
+<ion-view view-title="Settings">
+<ion-nav-bar class="bar bar-header bar-balanced">
+    <ion-nav-back-button>         
+ </ion-nav-back-button>
+<ion-nav-buttons side="right">
+<button class="button button-icon ion-more" ng-click="openPopover($event)">
+        </button> 
+</ion-nav-buttons>
+  </ion-nav-bar>
+ 
+
+	<ion-content>
+	<ion-grid>
+	<div style="background: green;">
+		<img ng-if="employee.profile_picture != ''"  ng-model="employee.profile_picture" ng-click="addMedia()"  style="width: 80%;height: 200px; margin: 5px;    border-radius: 50%;
+		margin-left: 10%;    margin-top: 70px;    margin-bottom: 40px;" ng-src="http://www.diazapps.com/ect/{{employee.profile_picture}}">
+		<img ng-if="employee.profile_picture == '' " style="width: 70px;height: 70px; margin: 5px;     border-radius: 50%;
+		margin-left: 10%;    margin-bottom: 30px;    margin-bottom: 40px;" ng-src="img/null.png">
+	</div>
+	<div class="list">
+			<label class="item item-input item-stacked-label">
+    <span class="input-label">Name</span>
+	    <input type="text"  ng-model="employee.name" ng-disabled="!edit" placeholder="{{employee.name}}" >
+    </label>
+	
+			<label class="item item-input item-stacked-label">
+    <span class="input-label">Job</span>
+	    <input type="text"  ng-model="employee.job" ng-disabled="!edit" placeholder="{{employee.job}}" >
+    </label>	
+	
+			<label class="item item-input item-stacked-label">
+    <span class="input-label">Hire Date</span>
+	    <input type="text"  ng-model="employee.date_of_hired" ng-disabled="!edit" placeholder="{{employee.date_of_hired}}" >
+    </label>
+	
+			<label class="item item-input item-stacked-label">
+    <span class="input-label">Address</span>
+	    <input type="text"  ng-model="employee.address" ng-disabled="!edit" placeholder="{{employee.address}}" >
+    </label>
+	
+			<label class="item item-input item-stacked-label">
+    <span class="input-label">Phone</span>
+	    <input type="text"  ng-model="employee.phone" ng-disabled="!edit" placeholder="{{employee.phone}}" >
+    </label>
+	
+			<label class="item item-input item-stacked-label">
+    <span class="input-label">Email</span>
+	    <input type="text" ng-model="employee.email" disabled="true"  placeholder="{{employee.email}}" >
+    </label>
+    <button  ng-click="editar()" ng-show="!save" style="margin-top: 10px; " class="button button-block button-balanced ">Edit Profile</button>
+	</div>
+	<button  ng-click="update()" ng-show="save" ng-show="true" style="margin-top: 10px; " class="button button-block button-balanced ">Save</button>
+
+	</div>
+	</ion-grid>
+	</ion-content>
+</ion-view>
+
+
+
