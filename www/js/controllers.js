@@ -576,7 +576,7 @@ alert(file);
 
 })
 
-.controller('SettingsCtrl', function($cordovaCapture,$ionicPopover, $ionicPlatform, $ionicActionSheet, userService, employeeService, $scope, $http, $cordovaImagePicker, $cordovaFileTransfer) {
+.controller('SettingsCtrl', function($timeout, $cordovaCapture ,$ionicPopover, $ionicPlatform, $ionicActionSheet, userService, employeeService, $scope, $http, $cordovaImagePicker, $cordovaFileTransfer) {
 
 
 $ionicPopover.fromTemplateUrl('templates/popover.html', {
@@ -622,6 +622,11 @@ $ionicPopover.fromTemplateUrl('templates/popover.html', {
 
 
   $scope.user = userService.userData;
+  $scope.employee = employeeService.employeeData;
+
+  console.log($scope.employee);
+  console.log($scope.employee.profile_picture);
+
 
   var headers = {'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'};
 
@@ -673,7 +678,7 @@ $ionicPopover.fromTemplateUrl('templates/popover.html', {
     });
   }
 
-  
+
 
   $scope.addImage = function(type){
     if(type == 1){
@@ -694,22 +699,24 @@ $ionicPopover.fromTemplateUrl('templates/popover.html', {
      var targetPath = results[0];
      var filename = targetPath.split("/").pop();
 
-     // alert(filename);
+
+
      var options = {
       fileKey: "file",
       fileName: filename,
       chunkedMode: false,
       mimeType: "image/jpg",
-      params: {'id_employee': userService.userData.id_employee}   
+      params: {'id_employee': employeeService.employeeData.id}   
 
     };
+    
     $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result) {
-      // console.log("SUCCESS: " + JSON.stringify(result.response));
-      alert("success");
+/*      console.log("SUCCESS: " + JSON.stringify(result.response));
+*/      alert("success");
       // alert(JSON.stringify(result.response));
     }, function(err) {
-      // console.log("ERROR: " + JSON.stringify(err));
-      alert(JSON.stringify(err));
+/*       console.log("ERROR: " + JSON.stringify(err));
+*/      alert(JSON.stringify(err));
     }, function (progress) {
             // constant progress updates
             $timeout(function () {
@@ -722,35 +729,32 @@ $ionicPopover.fromTemplateUrl('templates/popover.html', {
     var options = { limit: 1 };
 
     $cordovaCapture.captureImage(options).then(function(imageData) {
-    alert("esta es la data de la imagen recient tomada. Avisame si te muestra este mensaje" +imageData);
-
-       }, function(err) {
-      // An error occurred. Show a message to the user
-    });
-  
-
 
 
      var url = "http://www.stafftrainingcompliance.com/upload_angular_profile.php";
      //target path may be local or url
-     var targetPath = imageData;
+     var targetPath = imageData[0].fullPath;
      var filename = targetPath.split("/").pop();
 
-     // alert(filename);
+       console.log(filename);
+     console.log(employeeService.employeeData.id);
+     
      var options = {
       fileKey: "file",
       fileName: filename,
       chunkedMode: false,
       mimeType: "image/jpeg",
-      params: {'id_employee': userService.userData.id_employee}   
+      params: {'id_employee': employeeService.employeeData.id}   
 
     };
+
     $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result) {
-      // console.log("SUCCESS: " + JSON.stringify(result.response));
+       console.log("SUCCESS: " + JSON.stringify(result.response));
       alert("success");
+      console.log("success");
       // alert(JSON.stringify(result.response));
     }, function(err) {
-      // console.log("ERROR: " + JSON.stringify(err));
+       console.log("ERROR: " + JSON.stringify(err));
       alert(JSON.stringify(err));
     }, function (progress) {
             // constant progress updates
@@ -758,6 +762,16 @@ $ionicPopover.fromTemplateUrl('templates/popover.html', {
               $scope.downloadProgress = (progress.loaded / progress.total) * 100;
             })
           });
+
+
+    
+       }, function(err) {
+      // An error occurred. Show a message to the user
+    });
+  
+
+
+
 
   }
 }
