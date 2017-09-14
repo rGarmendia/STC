@@ -8,16 +8,30 @@
 			
 			<label style="font-size: 15px; font-weight: 500;">{{$index+1}}.-{{question.description}} (pts{{ question.score}})</label>
 
-			<textarea ng-init="{solution: ng-value,question: question.id_questions}" ng-model="answers[$index]" style="font-size: 13px; width: 100% " ng-if="question.questiontype_id == 2"></textarea>
+			<textarea ng-init="{solution: ng-value,question: question.id_questions}" ng-model="answers_text[$index]" style="font-size: 13px; width: 100% " ng-if="question.questiontype_id == 2"></textarea>
 				
 			<ion-list  >	
 				
-				<ion-radio name="radio_group{{$parent.$parent.$index}}" ng-repeat="solution in solutions | filter: {question_id: question.id_questions } "  style="font-size: 13px;"  ng-if="question.questiontype_id == 1" ng-model="answers[$parent.$parent.$index]" ng-value="{solution: solution.id_solutions,question: question.id_questions}">{{solution.description}}</ion-radio>
+				 <ion-checkbox  ng-repeat="solution in solutions | filter: {question_id: question.id_questions } " 
+				style="font-size: 13px;"  
+				ng-if="question.questiontype_id == 1" 
+    			ng-model="answers"
+    			checklist-value="solution"
+    			ng-click="value(solution)"
+
+    			 >
+    			{{solution.description}}
+    			</ion-checkbox> 
+
+    	
 			</ion-list>
+
 		</div>	
 
-
 <button  ng-click="send('hola!')"   style="margin-top: 10px;"  class=" col-offset-33 button button-balanced ">Send</button>
+
 	</ion-content>
 </ion-view>
+
+			<!-- Para Radio Buttons<textarea ng-init="{solution: ng-value,question: question.id_questions}" ng-model="answers[$index]" style="font-size: 13px; width: 100% " ng-if="question.questiontype_id == 2"></textarea> -->
 

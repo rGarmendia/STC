@@ -1,0 +1,46 @@
+
+<ion-view view-title="Per Year" >
+<ion-nav-bar class="bar-balanced">
+    <ion-nav-back-button></ion-nav-back-button>
+    <ion-nav-buttons side="right">
+</ion-nav-buttons>
+  </ion-nav-bar>
+    <ion-content>  
+       <div class="list">
+           <label class="item item-input item-select">
+    <div class="input-label">
+     Select a scholar Year
+    </div>
+      <select ng-model="year_selected">
+        <option ng-repeat="year in years"  value="{{year.id}}">{{year.f | date :  "dd.MM.y"}} - {{year.f2 | date :  "dd.MM.y"}} </option>
+      </select>
+      </label>
+    </div>  
+    <button class="  button button-balanced" style="margin-bottom: 15px; " ng-click="load(year_selected)">
+Load Workshops</button>
+</div>          
+<table class="responsive">
+      <thead>
+        <tr>
+          <th scope="col">Workshop</th>
+          <th scope="col">Institution</th>
+          <th scope="col">Certificate</th>
+          <th scope="col">Credit Hours</th>
+          <th scope="col">Missing Hours</th>
+          <th scope="col">Status</th>
+        </tr>
+    </thead>
+      <tbody ng-repeat="workshop in workshops">
+        <tr>
+              <td data-table-header="Workshop">{{workshop.workshop_name}}</td>
+              <td data-table-header="Institution">{{workshop.vendor_name}}</td>
+              <td data-table-header="Credit Hours" >{{workshop.workshop_hours}}</td>
+              <td data-table-header="Certificate"><button style=""  ng-click="download(workshop.path)" class="button button-small button-calm">view</button></td>
+             
+        </tr>
+    
+      </tbody>
+</table>
+
+    </ion-content>
+</ion-view>

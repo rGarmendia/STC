@@ -22,16 +22,19 @@
     "dependencies": {
         "cordova-android": "^6.2.3",
         "cordova-ios": "^4.4.0",
+        "cordova-plugin-camera": "^2.4.1",
         "cordova-plugin-compat": "^1.1.0",
-        "cordova-plugin-console": "^1.0.5",
-        "cordova-plugin-device": "^1.1.4",
+        "cordova-plugin-console": "^1.0.7",
+        "cordova-plugin-datepicker": "git+https://github.com/VitaliiBlagodir/cordova-plugin-datepicker.git",
+        "cordova-plugin-device": "^1.1.6",
         "cordova-plugin-file": "^4.3.3",
         "cordova-plugin-file-transfer": "^1.6.3",
+        "cordova-plugin-filepath": "^1.0.2",
         "cordova-plugin-image-picker": "git+https://github.com/wymsee/cordova-imagePicker.git",
         "cordova-plugin-media-capture": "^1.4.3",
         "cordova-plugin-splashscreen": "^4.0.3",
-        "cordova-plugin-statusbar": "^2.2.1",
-        "cordova-plugin-whitelist": "^1.3.1",
+        "cordova-plugin-statusbar": "^2.2.3",
+        "cordova-plugin-whitelist": "^1.3.2",
         "ionic-plugin-keyboard": "^2.2.1",
         "moment": "^2.18.1",
         "ng-file-upload": "^12.2.13",
@@ -39,7 +42,6 @@
     },
     "cordova": {
         "plugins": {
-            "cordova-plugin-image-picker": {},
             "cordova-plugin-console": {},
             "cordova-plugin-device": {},
             "cordova-plugin-splashscreen": {},
@@ -51,7 +53,12 @@
                 "MICROPHONE_USAGE_DESCRIPTION": " ",
                 "PHOTOLIBRARY_USAGE_DESCRIPTION": " "
             },
-            "cordova-plugin-file-transfer": {}
+            "cordova-plugin-file-transfer": {},
+            "cordova-plugin-datepicker": {},
+            "cordova-plugin-image-picker": {},
+            "cordova-plugin-compat": {},
+            "cordova-plugin-camera": {},
+            "cordova-plugin-filepath": {}
         },
         "platforms": [
             "android",
