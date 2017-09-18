@@ -307,10 +307,10 @@ $http.post('http://www.stafftrainingcompliance.com/login_ETC.php',{
 
   $ionicPlatform.ready(function() {
     console.log("entro en el metodo");
-    console.log(localStorage.getItem('username'));
-console.log(localStorage.getItem('password'));
+    console.log(localStorage.getItem('usernameSTC'));
+console.log(localStorage.getItem('passwordSTC'));
     document.addEventListener("deviceready", function() {
-        if (localStorage.getItem('username') !== "" && localStorage.getItem('password') !== "") {
+        if (localStorage.getItem('usernameSTC') !== "" && localStorage.getItem('passwordSTC') !== "") {
           console.log('cumple la condicion');
             $state.go('app.home');
         } else {
@@ -352,8 +352,8 @@ $http.post('http://www.stafftrainingcompliance.com/login_ETC.php',{
    /*  alert(JSON.stringify(response));*/
 if( $scope.check.val == true){
 
- window.localStorage['username'] = $scope.loginData.username;
- window.localStorage['password'] = $scope.loginData.password;
+ window.localStorage['usernameSTC'] = $scope.loginData.username;
+ window.localStorage['passwordSTC'] = $scope.loginData.password;
 }
    userService.setId(response.data.id_user);
    userService.setEmail(response.data.email);
@@ -688,59 +688,43 @@ var platform = ionic.Platform.device().platform;
 
 })
 
-.controller('SettingsCtrl', function($timeout,$rootScope, $cordovaCapture ,$cordovaCamera, $ionicPopover, $ionicPlatform, $ionicActionSheet, userService, employeeService, $scope, $http, $cordovaImagePicker, $cordovaFileTransfer) {
-
-
-$ionicPopover.fromTemplateUrl('templates/popover.html', {
-      scope: $scope
-   }).then(function(popover) {
-      $scope.popover = popover;
-   });
-
-   $scope.openPopover = function($event) {
-      $scope.popover.show($event);
-   };
-
-   $scope.closePopover = function() {
-      $scope.popover.hide();
-   };
-
-   //Cleanup the popover when we're done with it!
-   $scope.$on('$destroy', function() {
-      $scope.popover.remove();
-   });
-
-   // Execute action on hide popover
-   $scope.$on('popover.hidden', function() {
-      // Execute action
-   });
-
-   // Execute action on remove popover
-   $scope.$on('popover.removed', function() {
-      // Execute action
-   });
+.controller('SettingsCtrl', function(md5, $timeout, $window, $cordovaCapture ,$cordovaCamera, $ionicPopover, $ionicPlatform, $ionicActionSheet, userService, employeeService, $scope, $http, $cordovaImagePicker, $cordovaFileTransfer) {
 
 
 
+var headers = {'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'};
 
 
-  $scope.edit = false;
-  $scope.save = false;
-  $scope.editar = function(){
-    $scope.edit = true;
-    $scope.save = true;
-  }
+        if (localStorage.getItem('logSet') !== "" && localStorage.getItem('passSet') !== "") {
+          console.log('cumple la condicion SETTINGS');
+            $http.post('http://www.stafftrainingcompliance.com/login_upload.php',{
+  user_name:localStorage.getItem('logSet'),
+  user_pass:localStorage.getItem('passSet')
+},{
+  headers : headers 
+} ).then(function(response){
+  $scope.id = response.data.id_user;
+window.localStorage['logSet'] = '';
+window.localStorage['passSet'] = '';
 
 
 
-  $scope.user = userService.userData;
+  if(angular.isString($scope.id) === true){
+   /*  alert(JSON.stringify(response));*/
+
+   userService.setId(response.data.id_user);
+   userService.setEmail(response.data.email);
+   userService.setIdRol(response.data.role_id);
+   userService.setStatus(response.data.status);
+   userService.setPassword(response.data.password);
+
+$scope.user = userService.userData;
   $scope.employee = employeeService.employeeData;
 
   console.log($scope.employee);
   console.log($scope.employee.profile_picture);
 
 
-  var headers = {'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'};
 
   $http.post('http://www.stafftrainingcompliance.com/get_employee_ect.php',{
     id_user: userService.userData.id
@@ -836,6 +820,11 @@ if(platform == 'Android'){
     $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result) {
       console.log("SUCCESS: " + JSON.stringify(result.response));
       alert("success");
+window.localStorage['logSet'] = userService.userData.email;
+window.localStorage['passSet'] = userService.userData.password;
+
+$window.location.reload(); 
+
       // alert(JSON.stringify(result.response));
     }, function(err) {
 /*       console.log("ERROR: " + JSON.stringify(err));
@@ -883,6 +872,11 @@ if(platform == 'Android'){
     $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result) {
 /*      console.log("SUCCESS: " + JSON.stringify(result.response));
 */      alert("success");
+        window.localStorage['logSet'] = userService.userData.email;
+window.localStorage['passSet'] = userService.userData.password;
+
+$window.location.reload(); 
+
       // alert(JSON.stringify(result.response));
     }, function(err) {
 /*       console.log("ERROR: " + JSON.stringify(err));
@@ -923,6 +917,12 @@ if(platform == 'Android'){
        console.log("SUCCESS: " + JSON.stringify(result.response));
       alert("success");
       console.log("success");
+      window.localStorage['logSet'] = userService.userData.email;
+window.localStorage['passSet'] = userService.userData.password;
+
+$window.location.reload(); 
+
+
       // alert(JSON.stringify(result.response));
     }, function(err) {
        console.log("ERROR: " + JSON.stringify(err));
@@ -970,6 +970,331 @@ $scope.update = function(){
 }
 
 
+ } else{
+  alert('Incorrect Credentials. Please try again');
+}
+},function errorCallback(response) {
+console.log(JSON.stringify(response));
+})
+        }else{ 
+    
+
+alert(userService.userData.id + "userService fuera");
+
+
+window.localStorage['logSet'] = '';
+window.localStorage['passSet'] = '';
+
+
+$ionicPopover.fromTemplateUrl('templates/popover.html', {
+      scope: $scope
+   }).then(function(popover) {
+      $scope.popover = popover;
+   });
+
+   $scope.openPopover = function($event) {
+      $scope.popover.show($event);
+   };
+
+   $scope.closePopover = function() {
+      $scope.popover.hide();
+   };
+
+   //Cleanup the popover when we're done with it!
+   $scope.$on('$destroy', function() {
+      $scope.popover.remove();
+   });
+
+   // Execute action on hide popover
+   $scope.$on('popover.hidden', function() {
+      // Execute action
+   });
+
+   // Execute action on remove popover
+   $scope.$on('popover.removed', function() {
+      // Execute action
+   });
+
+
+
+
+
+  $scope.edit = false;
+  $scope.save = false;
+  $scope.editar = function(){
+    $scope.edit = true;
+    $scope.save = true;
+  }
+
+
+
+  $scope.user = userService.userData;
+  $scope.employee = employeeService.employeeData;
+
+  console.log($scope.employee);
+  console.log($scope.employee.profile_picture);
+
+
+
+  $http.post('http://www.stafftrainingcompliance.com/get_employee_ect.php',{
+    id_user: userService.userData.id
+  },{
+    headers : headers 
+  } ).then(function(response1){
+    // console.log(response1.data);    
+
+    userService.setIdEmployee(response1.data.id_employees);
+
+    employeeService.setId(response1.data.id_employees);
+    employeeService.setDaycareId(response1.daycare_id);
+    employeeService.setUserId(response1.data.user_id);
+    employeeService.setName(response1.data.name);
+    employeeService.setPhone(response1.data.phone);
+    employeeService.setStatus(response1.data.status);
+    employeeService.setAddress(response1.data.address);
+    employeeService.setBirthdate(response1.data.birthdate);
+    employeeService.setGender(response1.data.gender);
+    employeeService.setProfilePicture(response1.data.profile_picture);
+    employeeService.setJob(response1.data.job);
+    employeeService.setTypeEmployeeId(response1.data.type_employee_id);
+    employeeService.setDateOfResponsability(response1.data.date_of_responsability);
+    employeeService.setDateOfHired(response1.data.date_of_hired); 
+
+    $scope.employee = employeeService.employeeData;
+    $scope.employee.email = userService.userData.email;
+
+  },function errorCallback(response1) {
+
+  })
+
+
+  $scope.addMedia = function() {
+    $scope.hideSheet = $ionicActionSheet.show({
+      buttons: [
+      { text: 'Take photo' },
+      { text: 'Photo from library' }
+      ],
+      titleText: 'Add Photo',
+      cancelText: 'Cancel',
+      buttonClicked: function(index) {
+        $scope.addImage(index);
+        // alert(index);
+
+      }
+    });
+  }
+
+ $scope.refresh = function(){
+
+window.localStorage['logSet'] = userService.userData.email;
+window.localStorage['passSet'] = userService.userData.password;
+
+$window.location.reload(); 
+
+console.log(localStorage.getItem('logSet'));
+
+console.log(localStorage.getItem('passSet'));
+
+}
+
+  $scope.addImage = function(type){
+
+  var platform = ionic.Platform.device().platform; 
+
+    if(type == 1){
+if(platform == 'Android'){
+  var options = {
+  sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+  destinationType: Camera.DestinationType.FILE_URI
+
+ }
+
+ $cordovaCamera.getPicture(options)
+ .then(function (results) {
+   console.log(results);
+   
+  
+  window.FilePath.resolveNativePath(results, function(result) {
+    // onSuccess code
+    console.log(result + "Window FilePath");
+
+
+ var url = "http://www.stafftrainingcompliance.com/upload_angular_profile.php";
+     //target path may be local or url
+     var targetPath = result;
+     console.log(targetPath + "Target Path");
+
+     var filename = targetPath.split("/").pop();
+     console.log(filename + "filename" );
+
+
+
+     var options = {
+      fileKey: "file",
+      fileName: filename,
+      chunkedMode: false,
+      mimeType: "image/jpg",
+      params: {'id_employee': employeeService.employeeData.id}   
+
+    };
+    
+    $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result) {
+      console.log("SUCCESS: " + JSON.stringify(result.response));
+      alert("success");
+      
+      window.localStorage['logSet'] = userService.userData.email;
+window.localStorage['passSet'] = userService.userData.password;
+
+$window.location.reload(); 
+
+
+      // alert(JSON.stringify(result.response));
+    }, function(err) {
+/*       console.log("ERROR: " + JSON.stringify(err));
+*/      alert(JSON.stringify(err));
+    }, function (progress) {
+            // constant progress updates
+            $timeout(function () {
+              $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+            })
+          });
+  })
+  }, function (error) {
+    // onError code here
+  })
+}else{
+     
+      var options = {
+       maximumImagesCount: 1,
+       width: 800,
+       height: 800,
+       quality: 80
+     }
+
+     $cordovaImagePicker.getPictures(options)
+     .then(function (results) {
+      // console.log(results[0]);
+
+
+      var url = "http://www.stafftrainingcompliance.com/upload_angular_profile.php";
+     //target path may be local or url
+     var targetPath = results[0];
+     var filename = targetPath.split("/").pop();
+
+
+
+     var options = {
+      fileKey: "file",
+      fileName: filename,
+      chunkedMode: false,
+      mimeType: "image/jpg",
+      params: {'id_employee': employeeService.employeeData.id}   
+
+    };
+    
+    $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result) {
+/*      console.log("SUCCESS: " + JSON.stringify(result.response));
+*/      alert("success");
+        window.localStorage['logSet'] = userService.userData.email;
+window.localStorage['passSet'] = userService.userData.password;
+
+$window.location.reload(); 
+
+
+      // alert(JSON.stringify(result.response));
+    }, function(err) {
+/*       console.log("ERROR: " + JSON.stringify(err));
+*/      alert(JSON.stringify(err));
+    }, function (progress) {
+            // constant progress updates
+            $timeout(function () {
+              $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+            })
+          });
+  })
+  } 
+   }else if (type == 0){
+    
+    var options = { limit: 1 };
+
+    $cordovaCapture.captureImage(options).then(function(imageData) {
+
+
+     var url = "http://www.stafftrainingcompliance.com/upload_angular_profile.php";
+     //target path may be local or url
+     var targetPath = imageData[0].fullPath;
+     var filename = targetPath.split("/").pop();
+
+       console.log(filename);
+     console.log(employeeService.employeeData.id);
+     
+     var options = {
+      fileKey: "file",
+      fileName: filename,
+      chunkedMode: false,
+      mimeType: "image/jpeg",
+      params: {'id_employee': employeeService.employeeData.id}   
+
+    };
+
+    $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result) {
+       console.log("SUCCESS: " + JSON.stringify(result.response));
+      alert("success");
+      console.log("success");
+      
+      window.localStorage['logSet'] = userService.userData.email;
+window.localStorage['passSet'] = userService.userData.password;
+
+$window.location.reload(); 
+
+      // alert(JSON.stringify(result.response));
+    }, function(err) {
+       console.log("ERROR: " + JSON.stringify(err));
+      alert(JSON.stringify(err));
+    }, function (progress) {
+            // constant progress updates
+            $timeout(function () {
+              $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+            })
+          });
+
+
+    
+       }, function(err) {
+      // An error occurred. Show a message to the user
+    });
+  
+
+
+
+
+  }
+}
+
+$scope.update = function(){
+
+ $http.post('http://www.stafftrainingcompliance.com/update_angular.php',{
+  name: $scope.employee.name,
+  job: $scope.employee.job,
+  hire_date: $scope.employee.date_of_hired,
+  address: $scope.employee.address,
+  phone: $scope.employee.phone,
+  id_employee: userService.userData.id_employee
+},{
+  headers : headers 
+} ).then(function(respon){
+
+
+
+}
+,function errorCallback(respon) {
+
+})
+
+}
+
+
+}
 }) 
 
 
