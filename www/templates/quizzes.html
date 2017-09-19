@@ -8,7 +8,7 @@
 			
 			<label style="font-size: 15px; font-weight: 500;">{{$index+1}}.-{{question.description}} (pts{{ question.score}})</label>
 
-			<textarea ng-init="{solution: ng-value,question: question.id_questions}" ng-model="answers_text[$index]" style="font-size: 13px; width: 100% " ng-if="question.questiontype_id == 2"></textarea>
+			<textarea ng-init="{solution: ng-value,question: question.id_questions}" ng-model="answers_text[$index]" style="background:#f1f1f1; font-size: 13px; width: 100% " ng-if="question.questiontype_id == 2"></textarea>
 				
 			<ion-list  >	
 				

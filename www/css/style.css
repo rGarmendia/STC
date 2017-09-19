@@ -13,10 +13,10 @@ table {
 }
 /* Zebra striping */
 tr:nth-of-type(odd) { 
-  background: #eee; 
+  /*background: #eee; */
 }
 th { 
-  background: #333; 
+  /*background: #333;*/ 
   color: white; 
   font-weight: bold; 
 }

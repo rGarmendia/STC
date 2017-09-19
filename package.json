@@ -34,13 +34,15 @@
         "cordova-plugin-filepath": "^1.0.2",
         "cordova-plugin-image-picker": "git+https://github.com/wymsee/cordova-imagePicker.git",
         "cordova-plugin-media-capture": "^1.4.3",
+        "cordova-plugin-progressindicator": "git+https://github.com/pbernasconi/cordova-progressIndicator.git",
         "cordova-plugin-splashscreen": "^4.0.3",
         "cordova-plugin-statusbar": "^2.2.3",
         "cordova-plugin-whitelist": "^1.3.2",
         "ionic-plugin-keyboard": "^2.2.1",
         "moment": "^2.18.1",
         "ng-file-upload": "^12.2.13",
-        "npm-git-install": "^0.3.0"
+        "npm-git-install": "^0.3.0",
+        "org.pbernasconi.progressindicator": "https://github.com/pbernasconi/cordova-progressIndicator.git"
     },
     "cordova": {
         "plugins": {
@@ -60,7 +62,8 @@
             "cordova-plugin-image-picker": {},
             "cordova-plugin-compat": {},
             "cordova-plugin-camera": {},
-            "cordova-plugin-filepath": {}
+            "cordova-plugin-filepath": {},
+            "org.pbernasconi.progressindicator": {}
         },
         "platforms": [
             "android",
