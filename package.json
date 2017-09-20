@@ -17,7 +17,8 @@
         "cordova-plugin-device",
         "cordova-plugin-statusbar",
         "cordova-plugin-splashscreen",
-        "ionic-plugin-keyboard"
+        "ionic-plugin-keyboard",
+        "cordova-plugin-inappbrowser"
     ],
     "cordovaPlatforms": [],
     "dependencies": {
@@ -33,6 +34,7 @@
         "cordova-plugin-file-transfer": "^1.6.3",
         "cordova-plugin-filepath": "^1.0.2",
         "cordova-plugin-image-picker": "git+https://github.com/wymsee/cordova-imagePicker.git",
+        "cordova-plugin-inappbrowser": "^1.7.1",
         "cordova-plugin-media-capture": "^1.4.3",
         "cordova-plugin-progressindicator": "git+https://github.com/pbernasconi/cordova-progressIndicator.git",
         "cordova-plugin-splashscreen": "^4.0.3",
@@ -63,7 +65,8 @@
             "cordova-plugin-compat": {},
             "cordova-plugin-camera": {},
             "cordova-plugin-filepath": {},
-            "org.pbernasconi.progressindicator": {}
+            "org.pbernasconi.progressindicator": {},
+            "cordova-plugin-inappbrowser": {}
         },
         "platforms": [
             "android",

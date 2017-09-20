@@ -1,0 +1,15 @@
+<ion-view view-title="Certificate">
+ <ion-nav-bar class="bar-balanced">
+    <ion-nav-back-button></ion-nav-back-button>
+  </ion-nav-bar>
+ <ion-content>  
+
+<!--       <img ng-if="certificate.path != ''"   ng-src="{{certificate}}">
+ -->      <iframe ng-src="{{pdfurl}}"	
+ style="width:100%; height: 1100px;"></iframe>
+
+
+
+      {{certificate}}
+    </ion-content>
+  </ion-view>

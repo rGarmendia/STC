@@ -48,6 +48,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'angular-md5' ])
     }
   })
 
+   .state('app.certificate', {
+    url: '/certificate',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/certificate.html',
+        controller: 'certificateCtrl'
+      }
+    }
+  })
+
     .state('app.settings', {
     url: '/settings',
     views: {

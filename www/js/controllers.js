@@ -217,6 +217,7 @@ angular.module('starter.controllers', ['ngCordova'] )
 
 
 
+
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $http) {
 
   // With the new view caching in Ionic, Controllers are only called
@@ -322,7 +323,11 @@ $http.post('http://www.stafftrainingcompliance.com/login_ETC.php',{
   $scope.id = response.data.id_user;
 
   if(angular.isString($scope.id) === true){
-
+  userService.setId(response.data.id_user);
+   userService.setEmail(response.data.email);
+   userService.setIdRol(response.data.role_id);
+   userService.setStatus(response.data.status);
+   userService.setPassword(response.data.password);
       $state.go('app.home');}})
     } else {
       $state.go('login');
@@ -388,8 +393,8 @@ $http.post('http://www.stafftrainingcompliance.com/login_ETC.php',{
 
 
 .filter('diazapps', function ($sce) {
-  return function(sound) {
-    return $sce.trustAsResourceUrl('http://www.stafftrainingcompliance.com/' + sound);
+  return function(path) {
+    return $sce.trustAsResourceUrl('http://www.stafftrainingcompliance.com/' + path);
   };
 })
 
@@ -634,7 +639,7 @@ $cordovaProgress.hide()
 })
 
 
-.controller('CompletedCtrl', function($scope, $http, userService, employeeService, $cordovaImagePicker, $cordovaFileTransfer,  $timeout) {
+.controller('CompletedCtrl', function($scope, $sce, $rootScope,$cordovaInAppBrowser, $http, userService, employeeService, $cordovaImagePicker, $cordovaFileTransfer,  $timeout, $state, $ionicModal) {
   $scope.vendors_id = [];
   $scope.workshops_id = [];
 
@@ -660,18 +665,53 @@ $cordovaProgress.hide()
         $scope.workshops_id.push(enrollment.workshop_id);
       })
 
-      $http.post('http://www.stafftrainingcompliance.com/enrollments_workshops.php',{
+     $http.post('http://www.stafftrainingcompliance.com/enrollments_workshops.php',{
         id_workshops: $scope.workshops_id
       },{
         headers : headers 
       } ).then(function(response3){
 
+        $scope.optionSelected = function(i) {
+
+
+ $rootScope.certificate =  'http://www.stafftrainingcompliance.com/'+ i;
+
+
+   $timeout(function () {
+
+ $cordovaInAppBrowser.open($rootScope.certificate, '_system')
+      .then(function(event) {
+        // success
+        console.log(event);
+      })
+      .catch(function(event) {
+        console.log(event);
+        // error
+      });
+    })
+  
+
+
+
+
+
+  }
+
+
         $scope.workshops  = response3.data.workshops;
+        return $scope.workshops;
         console.log("workshops: " + $scope.workshops);
         angular.forEach($scope.workshops, function(workshop){
           $scope.vendors_id.push(workshop.vendor_id);
 
         })
+
+
+
+
+
+
+
       })
 
 
@@ -680,9 +720,15 @@ $cordovaProgress.hide()
     })
 
   })
+
+
   $scope.download = function(file){
 
-    var platform = ionic.Platform.device().platform; 
+
+
+
+ 
+    /*var platform = ionic.Platform.device().platform; 
 
 
   // File for download
@@ -711,10 +757,19 @@ $cordovaProgress.hide()
         $cordovaProgress.showBarWithLabel(false, 100000, "Loading")
 
           // PROGRESS HANDLING GOES HERE
-        });
+        });*/
     }
 
   })
+
+.controller('certificateCtrl', function($scope, $sce, $rootScope, $http, $cordovaInAppBrowser, $timeout) {
+
+ 
+
+//$scope.pdfurl =$sce.trustAsResourceUrl('https://docs.google.com/viewer?url=' + encodeURIComponent($rootScope.certificate));
+
+alert($rootScope.certificate);
+})
 
 .controller('SettingsCtrl', function(md5, $timeout, $window, $cordovaProgress, $cordovaCapture, $state, $cordovaCamera, $ionicPopover, $ionicPlatform, $ionicActionSheet, userService, employeeService, $scope, $http, $cordovaImagePicker, $cordovaFileTransfer) {
 
@@ -722,8 +777,7 @@ $cordovaProgress.hide()
 
   var headers = {'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'};
 
-    console.log(localStorage.getItem('logSet'));
-    console.log(localStorage.getItem('passSet'));
+    
 
 
 
@@ -1050,11 +1104,9 @@ $window.location.reload();
 else{ 
 
 
-//alert(userService.userData.id + "userService fuera");
+console.log(userService.userData.id + "userService fuera");
 
 
-window.localStorage['logSet'] = '';
-window.localStorage['passSet'] = '';
 
 
 $ionicPopover.fromTemplateUrl('templates/popover.html', {
