@@ -1,8 +1,14 @@
 
 <ion-view view-title="Settings">
 <ion-nav-bar class="bar bar-header bar-balanced">
-    <ion-nav-back-button>         
+  <ion-nav-back-button >         
  </ion-nav-back-button>
+
+<ion-nav-buttons class="hide" id="nav-button">
+<button class="button " ng-click="back()">
+       Back </button> 
+</ion-nav-buttons>
+   
 <ion-nav-buttons side="right">
 <button class="button button-icon ion-more" ng-click="openPopover($event)">
         </button> 
@@ -10,13 +16,21 @@
   </ion-nav-bar>
  
 
+ <!-- <ion-header-bar id="header_id" class="bar-balanced">
+  <div class="buttons">
+    <button class="button" ng-click="back()">Back</button>
+  </div>
+  <h1 class="title">Settings</h1>
+  <div class="buttons">
+<button class="button button-icon ion-more" ng-click="openPopover($event)">
+  </div>
+</ion-header-bar> -->
+
 	<ion-content>
 	<ion-grid>
 	<div style="background: green;">
-		<img ng-if="employee.profile_picture != ''"  ng-model="employee.profile_picture" ng-click="addMedia()"  style="width: 80%;height: 200px; margin: 5px;    border-radius: 50%;
-		margin-left: 10%;    margin-top: 70px;    margin-bottom: 40px;" ng-src="http://www.stafftrainingcompliance.com/{{employee.profile_picture}}">
-		<img ng-if="employee.profile_picture == '' " style="width: 70px;height: 70px; margin: 5px;     border-radius: 50%;
-		margin-left: 10%;    margin-bottom: 30px;    margin-bottom: 40px;" ng-src="img/null.png">
+		<img ng-if="employee.profile_picture != ''"  ng-model="employee.profile_picture" ng-click="addMedia()"  style="width: 90%;height: 350px; border-radius: 5%; margin: 5%" ng-src="http://www.stafftrainingcompliance.com/{{employee.profile_picture}}">
+		<img ng-if="employee.profile_picture == '' " style="width: 90%;height: 350px; border-radius: 5%; margin: 5%" ng-src="img/null.png">
 	</div>
 	<div class="list">
 			<label class="item item-input item-stacked-label">
@@ -53,7 +67,6 @@
 	<button  ng-click="update()" ng-show="save" ng-show="true" style="margin-top: 10px; " class="button button-block button-balanced ">Save</button>
 
 
-<progress max="{{progress.total}}" value="{{progress.loaded}}" ></progress>
 	
 	</div>
 	</ion-grid>

@@ -218,6 +218,10 @@ angular.module('starter.controllers', ['ngCordova'] )
 
 
 
+
+
+
+
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $http) {
 
   // With the new view caching in Ionic, Controllers are only called
@@ -307,6 +311,17 @@ var headers = {'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-
 
 
 
+if(localStorage.getItem('check') == true){
+  console.log("entro con datos");
+}else{
+console.log("entro sin datos");
+window.localStorage['usernameSTC'] = '';
+window.localStorage['passwordSTC'] = '';
+}
+
+
+
+
  $ionicPlatform.ready(function() {
   console.log("entro en el metodo");
   console.log(localStorage.getItem('usernameSTC'));
@@ -370,6 +385,8 @@ $http.post('http://www.stafftrainingcompliance.com/login_ETC.php',{
     console.log('Guardo las variables en el localStorage');
      window.localStorage['usernameSTC'] = $scope.loginData.username;
      window.localStorage['passwordSTC'] = $scope.loginData.password;
+     window.localStorage['check'] = $scope.check.val;
+
    }
    userService.setId(response.data.id_user);
    userService.setEmail(response.data.email);
@@ -468,6 +485,7 @@ $http.post('http://www.stafftrainingcompliance.com/login_ETC.php',{
 .controller('WorkshopsCtrl', function($scope, $http) {
 })
 
+
 .controller('AllCtrl', function( $scope, $http,$cordovaProgress, $cordovaCamera, userService, employeeService, $cordovaImagePicker, $cordovaFileTransfer,  $timeout) {
   var employee ={};
   $scope.categories = [];
@@ -527,7 +545,7 @@ $scope.upload = function(id_workshop){
   var platform = ionic.Platform.device().platform; 
 
   
-  if(platform == 'Android'){
+  if(platform == 'Android'){  
     var options = {
       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
     }
@@ -542,7 +560,7 @@ $scope.upload = function(id_workshop){
 
     var url = "http://www.stafftrainingcompliance.com/upload_enrollment.php";
      //target path may be local or url
-     var targetPath = results;
+     var targetPath = result;
      var filename = targetPath.split("/").pop();
 
      // alert(filename);
@@ -558,7 +576,7 @@ $cordovaProgress.showSimpleWithLabel(true, "Uploading, please wait") // .hide()
 
 
 $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result) {
-      // console.log("SUCCESS: " + JSON.stringify(result.response));
+         console.log("SUCCESS: " + JSON.stringify(result.response));
       alert("success");
       $cordovaProgress.hide()
 
@@ -594,7 +612,7 @@ $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result)
       // console.log(results[0]);
 
 
-      var url = "http://www.stafftrainingcompliance.com/upload_angular_profile.php";
+      var url = "http://www.stafftrainingcompliance.com/upload_enrollment.php";
      //target path may be local or url
      var targetPath = results[0];
      var filename = targetPath.split("/").pop();
@@ -606,7 +624,7 @@ $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result)
       fileName: filename,
       chunkedMode: false,
       mimeType: "image/jpg",
-      params: {'id_employee': employeeService.employeeData.id}   
+      params: {'id_employee': employeeService.employeeData.id, 'id_workshop': id_workshop, 'id_scholar': $scope.scho_years}   
 
     };
     
@@ -722,77 +740,60 @@ $cordovaProgress.hide()
   })
 
 
-  $scope.download = function(file){
-
-
-
-
- 
-    /*var platform = ionic.Platform.device().platform; 
-
-
-  // File for download
-  var url = "http://www.stafftrainingcompliance.com/"+file;
-
-      // File name only
-      var filename = url.split("/").pop();
-
-      // Save location
-
-      if (platform == 'Android'){ 
-        var targetPath = cordova.file.externalRootDirectory + filename;
-      }else{
-        var targetPath = cordova.file.documentsDirectory + filename;
-      }
-
-  $cordovaProgress.showSimpleWithLabel(true, "Uploading, please wait") // .hide()
-
-      $cordovaFileTransfer.download(url, targetPath,{}, true).then(function (result) {
-        console.log('Success');
-         $cordovaProgress.hide();
-        alert("Success. Look for the certificate on the root of your files.");
-      }, function (error) {
-        console.log('Error');
-      }, function (progress) {
-        $cordovaProgress.showBarWithLabel(false, 100000, "Loading")
-
-          // PROGRESS HANDLING GOES HERE
-        });*/
-    }
 
   })
 
-.controller('certificateCtrl', function($scope, $sce, $rootScope, $http, $cordovaInAppBrowser, $timeout) {
 
- 
-
-//$scope.pdfurl =$sce.trustAsResourceUrl('https://docs.google.com/viewer?url=' + encodeURIComponent($rootScope.certificate));
-
-alert($rootScope.certificate);
-})
 
 .controller('SettingsCtrl', function(md5, $timeout, $window, $cordovaProgress, $cordovaCapture, $state, $cordovaCamera, $ionicPopover, $ionicPlatform, $ionicActionSheet, userService, employeeService, $scope, $http, $cordovaImagePicker, $cordovaFileTransfer) {
 
 
 
+ 
+if(localStorage.getItem('val') == true){
+        window.localStorage['val'] = false;
+
+ $scope.$parent.$on('$ionicView.enter', function(e) {
+    $timeout(function() {
+      showHeader();
+    }, 1000);
+    
+    function showHeader() { 
+      // Having the nav-bar in your template, set an ID to it.
+      var header = document.getElementById("nav-button");
+      if (header.classList) {
+        if (header.classList.contains('hide')) {
+          header.classList.remove('hide');
+        }
+      }
+    }
+
+  });
+}
+
   var headers = {'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'};
 
     
+$scope.back = function(){
+
+  $state.go('app.home')
+}
+console.log(localStorage.getItem('logSet'));
+console.log(localStorage.getItem('passwordSet'));
 
 
 
-  if (localStorage.getItem('logSet') !== '' && localStorage.getItem('passSet') !== '') {
+  if (localStorage.getItem('logSet') !== null && localStorage.getItem('passwordSet') !== null) {
     console.log('cumple la condicion SETTINGS');
     $http.post('http://www.stafftrainingcompliance.com/login_upload.php',{
       user_name:localStorage.getItem('logSet'),
-      user_pass:localStorage.getItem('passSet')
+      user_pass:localStorage.getItem('passwordSet')
     },{
       headers : headers 
     } ).then(function(response){
       $scope.id = response.data.id_user;
-      window.localStorage['logSet'] = '';
-      window.localStorage['passSet'] = '';
-
+      window.localStorage['logSet'] = null;
+      window.localStorage['passwordSet'] = null;
 
 
       if(angular.isString($scope.id) === true){
@@ -860,7 +861,12 @@ alert($rootScope.certificate);
     });
       }
 
-
+ $scope.edit = false;
+   $scope.save = false;
+   $scope.editar = function(){
+    $scope.edit = true;
+    $scope.save = true;
+  }
 
       $scope.addImage = function(type){
 
@@ -912,11 +918,11 @@ $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result)
   $cordovaProgress.hide()
 
   window.localStorage['logSet'] = userService.userData.email;
-  window.localStorage['passSet'] = userService.userData.password;
- 
+  window.localStorage['passwordSet'] = userService.userData.password;
+  window.localStorage['val'] = true;
+
   $timeout(function () {
 $window.location.reload(); 
-    $state.go('app.home');
 })
 
   
@@ -979,11 +985,12 @@ $window.location.reload();
 $cordovaProgress.hide()
 
 window.localStorage['logSet'] = userService.userData.email;
-window.localStorage['passSet'] = userService.userData.password;
+window.localStorage['passwordSet'] = userService.userData.password;
+ window.localStorage['val'] = true;
+
 
   $timeout(function () {
 $window.location.reload(); 
-    $state.go('app.home');
 })
 
 //$window.location.reload(); 
@@ -1034,11 +1041,11 @@ $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result)
 
  console.log("success");
  window.localStorage['logSet'] = userService.userData.email;
- window.localStorage['passSet'] = userService.userData.password;
+ window.localStorage['passwordSet'] = userService.userData.password;
+ window.localStorage['val'] = true;
 
   $timeout(function () {
 $window.location.reload(); 
-    $state.go('app.home');
 })
 
 
@@ -1070,6 +1077,10 @@ $window.location.reload();
 
     $scope.update = function(){
 
+      alert('Profile updated');
+
+      window.localStorage['logSet'] = userService.userData.email;
+ window.localStorage['passwordSet'] = userService.userData.password;
      $http.post('http://www.stafftrainingcompliance.com/update_angular.php',{
       name: $scope.employee.name,
       job: $scope.employee.job,
@@ -1081,13 +1092,16 @@ $window.location.reload();
       headers : headers 
     } ).then(function(respon){
 
-
+$timeout(function () {
+$window.location.reload(); 
+})
 
     }
     ,function errorCallback(respon) {
 
     })
 
+ 
   }
 
 
@@ -1258,13 +1272,16 @@ $scope.closePopover = function() {
     $cordovaProgress.hide()
 
     window.localStorage['logSet'] = userService.userData.email;
-    window.localStorage['passSet'] = userService.userData.password;
+    window.localStorage['passwordSet'] = userService.userData.password;
+     window.localStorage['val'] = true;
 
-  $timeout(function () {
+
+ window.localStorage['val'] = true;
+
+   $timeout(function () {
 $window.location.reload(); 
-    $state.go('app.home');
 })
- 
+       
 
 
       // alert(JSON.stringify(result.response));
@@ -1322,11 +1339,12 @@ $window.location.reload();
 $cordovaProgress.hide()
 
 window.localStorage['logSet'] = userService.userData.email;
-window.localStorage['passSet'] = userService.userData.password;
+window.localStorage['passwordSet'] = userService.userData.password;
+ window.localStorage['val'] = true;
+
 
   $timeout(function () {
 $window.location.reload(); 
-    $state.go('app.home');
 })
 
 
@@ -1378,11 +1396,12 @@ $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result)
  $cordovaProgress.hide()
 
  window.localStorage['logSet'] = userService.userData.email;
- window.localStorage['passSet'] = userService.userData.password;
+ window.localStorage['passwordSet'] = userService.userData.password;
+  window.localStorage['val'] = true;
+
 
   $timeout(function () {
 $window.location.reload(); 
-    $state.go('app.home');
 })
 //$window.location.reload(); 
 
@@ -1413,6 +1432,9 @@ $window.location.reload();
 }
 
 $scope.update = function(){
+      alert('Profile updated');
+window.localStorage['logSet'] = userService.userData.email;
+ window.localStorage['passwordSet'] = userService.userData.password;
 
  $http.post('http://www.stafftrainingcompliance.com/update_angular.php',{
   name: $scope.employee.name,
@@ -1425,7 +1447,9 @@ $scope.update = function(){
   headers : headers 
 } ).then(function(respon){
 
-
+$timeout(function () {
+$window.location.reload(); 
+})
 
 }
 ,function errorCallback(respon) {
@@ -1444,7 +1468,28 @@ $scope.update = function(){
 
 
 
-.controller('QuizzesCtrl', function($scope, $http, filterFilter, $filter, userService, $cordovaImagePicker, $cordovaFileTransfer, $location) {
+.controller('QuizzesCtrl', function($scope, $http, filterFilter, $filter, userService, $cordovaImagePicker, $cordovaFileTransfer, $location, $timeout) {
+
+
+ $scope.$parent.$on('$ionicView.enter', function(e) {
+    $timeout(function() {
+      showHeader();
+    }, 5000);
+    
+    function showHeader() { 
+      console.log("entre en el metodo");
+      // Having the nav-bar in your template, set an ID to it.
+      var header = document.getElementById("button_quiz");
+      if (header.classList) {
+        if (header.classList.contains('hide')) {
+          header.classList.remove('hide');
+        }
+      }
+    }
+
+  });
+
+
 
  var headers = {'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'};
 
