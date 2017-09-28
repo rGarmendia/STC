@@ -311,7 +311,7 @@ var headers = {'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-
 
 
 
-if(localStorage.getItem('check') == true){
+if(localStorage.getItem('check') == 'true'){
   console.log("entro con datos");
 }else{
 console.log("entro sin datos");
@@ -345,21 +345,7 @@ $http.post('http://www.stafftrainingcompliance.com/login_ETC.php',{
    userService.setPassword(response.data.password);
       $state.go('app.home');}})
     } else {
-      $state.go('login');
-    }
-  }, false);
-});
-
-
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  // Form data for the login modal
-  $scope.loginData = {};
+      $scope.loginData = {};
 
 
 
@@ -385,7 +371,10 @@ $http.post('http://www.stafftrainingcompliance.com/login_ETC.php',{
     console.log('Guardo las variables en el localStorage');
      window.localStorage['usernameSTC'] = $scope.loginData.username;
      window.localStorage['passwordSTC'] = $scope.loginData.password;
-     window.localStorage['check'] = $scope.check.val;
+     window.localStorage['check'] = $scope.check.val.toString();
+
+     console.log($scope.check.val.toString());
+     console.log(localStorage.getItem('check'));
 
    }
    userService.setId(response.data.id_user);
@@ -406,6 +395,27 @@ $http.post('http://www.stafftrainingcompliance.com/login_ETC.php',{
 
 
 
+
+
+
+
+    }
+  }, false);
+});
+
+
+  // With the new view caching in Ionic, Controllers are only called
+  // when they are recreated or on app start, instead of every page change.
+  // To listen for when this page is active (for example, to refresh data),
+  // listen for the $ionicView.enter event:
+  //$scope.$on('$ionicView.enter', function(e) {
+  //});
+
+  // Form data for the login modal
+  
+
+
+
 })
 
 
@@ -417,7 +427,7 @@ $http.post('http://www.stafftrainingcompliance.com/login_ETC.php',{
 
 
 
-.controller('homeCtrl', function($scope, $http, $ionicPopover,userService) {
+.controller('homeCtrl', function($scope, $http, $state, $window, $timeout, $ionicPopover,userService) {
 
   if(localStorage.getItem('usernameSTC') !== '' && localStorage.getItem('passwordSTC') !== '' ){
     var headers = {'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'};
@@ -476,8 +486,14 @@ $http.post('http://www.stafftrainingcompliance.com/login_ETC.php',{
   $scope.logout= function(){
     window.localStorage['usernameSTC'] = '';
     window.localStorage['passwordSTC'] = '';
+    window.localStorage['check'] = 'false';
+  
+$timeout(function () {
+  $state.go('login')
+$window.location.reload(); 
+})
+} 
 
-  }
 
 
 })
@@ -750,7 +766,7 @@ $cordovaProgress.hide()
 
 
  
-if(localStorage.getItem('val') == true){
+if(localStorage.getItem('val') === 'true'){
         window.localStorage['val'] = false;
 
  $scope.$parent.$on('$ionicView.enter', function(e) {
@@ -780,10 +796,23 @@ $scope.back = function(){
 }
 console.log(localStorage.getItem('logSet'));
 console.log(localStorage.getItem('passwordSet'));
+console.log(localStorage.getItem('check2'));
 
 
 
-  if (localStorage.getItem('logSet') !== null && localStorage.getItem('passwordSet') !== null) {
+
+
+if(localStorage.getItem('check2') === 'true'){
+  console.log("entro con datos");
+}else{
+console.log("entro sin datos");
+window.localStorage['logSet'] = '';
+window.localStorage['passwordSet'] = '';
+}
+
+
+
+  if (localStorage.getItem('logSet') !== '' && localStorage.getItem('passwordSet') !== '') {
     console.log('cumple la condicion SETTINGS');
     $http.post('http://www.stafftrainingcompliance.com/login_upload.php',{
       user_name:localStorage.getItem('logSet'),
@@ -792,9 +821,9 @@ console.log(localStorage.getItem('passwordSet'));
       headers : headers 
     } ).then(function(response){
       $scope.id = response.data.id_user;
-      window.localStorage['logSet'] = null;
-      window.localStorage['passwordSet'] = null;
-
+      window.localStorage['logSet'] = '';
+      window.localStorage['passwordSet'] = '';
+      window.localStorage['check2'] = false;
 
       if(angular.isString($scope.id) === true){
        /*  alert(JSON.stringify(response));*/
@@ -919,8 +948,7 @@ $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result)
 
   window.localStorage['logSet'] = userService.userData.email;
   window.localStorage['passwordSet'] = userService.userData.password;
-  window.localStorage['val'] = true;
-
+  window.localStorage['check2'] = 'true';
   $timeout(function () {
 $window.location.reload(); 
 })
@@ -986,7 +1014,8 @@ $cordovaProgress.hide()
 
 window.localStorage['logSet'] = userService.userData.email;
 window.localStorage['passwordSet'] = userService.userData.password;
- window.localStorage['val'] = true;
+  window.localStorage['check2'] = 'true';
+
 
 
   $timeout(function () {
@@ -1042,7 +1071,7 @@ $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result)
  console.log("success");
  window.localStorage['logSet'] = userService.userData.email;
  window.localStorage['passwordSet'] = userService.userData.password;
- window.localStorage['val'] = true;
+  window.localStorage['check2'] = 'true';
 
   $timeout(function () {
 $window.location.reload(); 
@@ -1273,7 +1302,7 @@ $scope.closePopover = function() {
 
     window.localStorage['logSet'] = userService.userData.email;
     window.localStorage['passwordSet'] = userService.userData.password;
-     window.localStorage['val'] = true;
+  window.localStorage['check2'] = 'true';
 
 
  window.localStorage['val'] = true;
@@ -1340,7 +1369,7 @@ $cordovaProgress.hide()
 
 window.localStorage['logSet'] = userService.userData.email;
 window.localStorage['passwordSet'] = userService.userData.password;
- window.localStorage['val'] = true;
+  window.localStorage['check2'] = 'true';
 
 
   $timeout(function () {
@@ -1397,7 +1426,7 @@ $cordovaFileTransfer.upload(url,targetPath, options, true).then(function(result)
 
  window.localStorage['logSet'] = userService.userData.email;
  window.localStorage['passwordSet'] = userService.userData.password;
-  window.localStorage['val'] = true;
+  window.localStorage['check2'] = 'true';
 
 
   $timeout(function () {
